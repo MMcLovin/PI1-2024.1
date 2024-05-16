@@ -1,12 +1,11 @@
-#!/usr/bin/env python
+import asyncio
+import websockets
 
-from websockets.sync.client import connect
+async def receive_data():
+    uri = "ws://localhost:8765"
+    async with websockets.connect(uri) as websocket:
+        while True:
+            data = await websocket.recv()
+            print(f"Received: {data}")
 
-def hello():
-    # uri = "ws://192.168.4.1:81"  # Este é o IP padrão do ESP32 em modo AP
-    with connect("ws://localhost:8765") as websocket:
-        websocket.send("Hello world!")
-        message = websocket.recv()
-        print(f"Received: {message}")
-
-hello()
+asyncio.get_event_loop().run_until_complete(receive_data())
