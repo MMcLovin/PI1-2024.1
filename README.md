@@ -1,3 +1,4 @@
+<p style="text-align: justify">
 # PI1-2024.1
  Repositório para organização do software relacionado ao projeto da disciplina de Projeto Integrador 1 de 2024.1
 
@@ -12,7 +13,7 @@ Dentro do planejamento auxiliado por metodologias ágeis, o Product Backlog é u
 
 
 | Épico | ID | Histórias de Usuário associadas | Rastreabilidade |
-| :---: | :-:| :------------------: | :--------------------: | :-------------: |
+| :---: | :-:| :------------------: | :--------------------: | 
 | Monitorar dados do robô seguidor de linha | EP01 | US0x | RX |
 | Analisar dados do robô seguidor de linha | EP02 | US0x | RX |
 
@@ -77,3 +78,4 @@ De acordo com ([Referencia]()) casos de uso são componentes fundamentais da lin
 
 ### Referências
 >
+</p>
