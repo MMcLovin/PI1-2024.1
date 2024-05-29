@@ -24,13 +24,13 @@ Dentro do planejamento auxiliado por metodologias ágeis, o Product Backlog é u
 
 | Título | ID | História de Usuário |  Rastreabilidade |
 | :----: | :-:| :-----------------: | :--------------: |
-| enviar dados dos sensores     | US01 |  |  | RX |
-| armazenar dados dos sensores     | US02 |  | US01 | RX |
-| tratar dados dos sensores     | US03 |  | US01 | RX |
-| gerar gráficos a partir dos dados dos sensores     | US04 |  | US01 | RX |
-| gerar gráficos a partir dos dados dos sensores     | US05 |  | US01 | RX |
-| Conectar A ESP32 na mesma rede do servidor | US06 |  | US01 | RX |
-| Conectar o servidor na mesma rede da ESP32 | US07 |  | US01 | RX |
+| enviar dados dos sensores     | US01 |  | RX |
+| armazenar dados dos sensores     | US02 |  | RX |
+| tratar dados dos sensores     | US03 |  | RX |
+| gerar gráficos a partir dos dados dos sensores     | US04 | | RX |
+| gerar gráficos a partir dos dados dos sensores     | US05 |  | RX |
+| Conectar A ESP32 na mesma rede do servidor | US06 |  | RX |
+| Conectar o servidor na mesma rede da ESP32 | US07 |  | RX |
 
 
 ### Backlog Funcional
