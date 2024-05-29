@@ -4,7 +4,13 @@ BPMN (Business Process Model and Notation) é uma notação de modelagem de neg�
 
 Foi modelado o processo no qual o carrinho percorre um trajeto determinado.
 
+### Primeira versão
+
 ![BPMN Percorrer Trajeto](./assets/bpmn-p1.png)
+
+### Segunda versão
+
+![BPMN Percorrer Trajeto](./assets/pi1.png)
 
 
 
