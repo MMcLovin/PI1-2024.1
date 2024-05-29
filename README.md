@@ -49,10 +49,10 @@ De acordo com ([Referencia]()) casos de uso são componentes fundamentais da lin
 ![caso-de-uso](assets/PI1%20-%20Use%20Cases.drawio.svg)
 
 
-### Requisitos
+## Requisitos
 
 
-#### Requisitos Funcionais
+### Requisitos Funcionais
 
 
 | Tipo | Descrição |
@@ -62,7 +62,7 @@ De acordo com ([Referencia]()) casos de uso são componentes fundamentais da lin
 | **RF03** | A trajetória percorrida pelo robô deve ser gerada a partir dos dados dos sensores |
 
 
-#### Requisitos Não-Funcionais
+### Requisitos Não-Funcionais
 
 
 | Tipo | Descrição |
@@ -76,6 +76,6 @@ De acordo com ([Referencia]()) casos de uso são componentes fundamentais da lin
 | **RNF07** | Os dados recebidos devem ser precisos (menos de 30% de erro) |
 
 
-### Referências
+## Referências
 >
 </p>
