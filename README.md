@@ -76,6 +76,12 @@ De acordo com ([Referencia]()) casos de uso são componentes fundamentais da lin
 | **RNF06** | O protocolo de comunicação com a ESP deverá ser websocket |
 | **RNF07** | Os dados recebidos devem ser precisos (menos de 30% de erro) |
 
+## Diagrama de Estado de Maquina
+
+Uma maquina de estados é qualquer dispositivo com a capacidade de armazenaros status um objeto em um determinado momento, mudar seus status e gerar ações, seu objetivo é demonstrar
+o comportamento de um elemento por meio de um conjunto de transições de estado.
+A Figura abaixo descreve os estados do Carrinho em funcionamento bem como possíveis transições.
+
 
 ## Referências
 >
