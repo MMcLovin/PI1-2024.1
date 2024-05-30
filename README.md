@@ -7,7 +7,7 @@
 ## Backlog
 
 
-Dentro do planejamento auxiliado por metodologias ágeis, o Product Backlog é um artefato fundamental, pois é uma lista mutável e priorizada de requisitos, funcionalidades e tarefas a serem executadas no projeto ou produto ([Referencia2]()). Ele destaca a divisão de grandes tarefas que podem ser - em ordem decrescente de especificidade - temas, épicos, histórias de usuário e tasks. O nosso backlog foi elaborado com base nos requisitos elicitados pela técnica de brainstorm com os membros do subgrupo, da equipe geral, de software no dia 20 de maio, portanto, foram identificados os épicos, detalhados na [tabela tal]() e historias de usuário, detalhadas na [tabela tal](), que foram agrupados na [tabela tal]() para fornecer uma melhor visualização do backlog. 
+Dentro do planejamento auxiliado por metodologias ágeis, o Product Backlog é um artefato fundamental, pois é uma lista mutável e priorizada de requisitos, funcionalidades e tarefas a serem executadas no projeto ou produto ([Referencia2]()). Ele destaca a divisão de grandes tarefas que podem ser - em ordem decrescente de especificidade - temas, épicos, histórias de usuário e tasks. O nosso backlog foi elaborado com base nos requisitos elicitados pela técnica de brainstorm com os membros do subgrupo, da equipe geral, de software no dia 20 de maio, portanto, foram identificados os épicos, detalhados na [tabela tal]() e historias de usuário, detalhadas na [tabela tal](), que foram agrupados na [tabela tal]() que tanto reúne as histórias de usuário associadas a cada épico quanto disponibiliza a rastreabilidade referente aos requisitos. 
 
 
 ### Épicos
@@ -37,12 +37,12 @@ Dentro do planejamento auxiliado por metodologias ágeis, o Product Backlog é u
 
 | ID Épico | Épico | Título da História de Usuário | ID História de Usuário | Rastreabilidade |
 | :------: | :---: | :------------------: | :--------------------: | :-------------: |
-| EP01 | Monitorar dados do robô seguidor de linha | ler dados dos sensores  | US01 | RFX |
-| EP02 | Analisar dados do robô seguidor de linha | Título | US0 | RF18 |
-| EP02 | Analisar dados do robô seguidor de linha | enviar dados dos sensores   | US02 | RFX |
-| EP02 | Analisar dados do robô seguidor de linha | armazenar dados dos sensores | US03 | RFX |
-| EP02 | Analisar dados do robô seguidor de linha | gerar gráficos a partir dos dados dos sensores   | US05 | RFX |
-| EP02 | Analisar dados do robô seguidor de linha | Conectar a ESP32 e o servidor em uma mesma rede  | US06 | RFX |
+| EP01 | Monitorar dados do robô seguidor de linha | ler dados dos sensores  | US01 | RF01 |
+| EP02 | Analisar dados do robô seguidor de linha | enviar dados dos sensores   | US02 | RF01 |
+| EP02 | Analisar dados do robô seguidor de linha | armazenar dados dos sensores | US03 | RF01 |
+| EP02 | Analisar dados do robô seguidor de linha | tratar dados dos sensores | US04 | RF02 |
+| EP02 | Analisar dados do robô seguidor de linha | gerar gráficos a partir dos dados dos sensores   | US05 | RF03 |
+| EP02 | Analisar dados do robô seguidor de linha | Conectar a ESP32 e o servidor em uma mesma rede  | US06 | RF01 |
 
 
 ## Diagrama de Casos de uso
@@ -62,8 +62,8 @@ De acordo com ([Referencia1]()) casos de uso são componentes fundamentais da li
 | Tipo | Descrição |
 | :--: | --------- |
 | **RF01** | O servidor deve ser capaz de armazenar os dados recebidos dos sensores em um banco de dados |
-| **RF02** | Os dados recebidos devem ser tratados para permitir análises posteriores |
-| **RF03** | A trajetória percorrida pelo robô deve ser gerada a partir dos dados dos sensores |
+| **RF02** | O sistema deve tratar os dados recebidos para permitir análises posteriores |
+| **RF03** | O sistema deve gerar a trajetória percorrida pelo robô a partir dos dados dos sensores |
 
 
 ### Requisitos Não-Funcionais
@@ -96,7 +96,7 @@ A Figura abaixo descreve os estados do Carrinho em funcionamento bem como possí
    isbn =      {9781260548006; 1260548007},
    year =      {2019},
    edition =   {9},
-   url =       {libgen.li/file.php?md5=8c29865b1b0f4e5c431ff1adf2a55f76}}
+   url =       {https://www.amazon.com/ISE-SOFTWARE-ENGINEERING-PRACTITIONERS-APPROACH/dp/1260548007}}
 > 2. @book{book:{104431635},
    title =     {	Análise de metodologias ágeis : conceitos, aplicações e relatos sobre XP e Scrum},
    author =    {Balle, Andrea Raymundo},
