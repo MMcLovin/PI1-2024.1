@@ -82,7 +82,7 @@ Uma maquina de estados é qualquer dispositivo com a capacidade de armazenaros s
 o comportamento de um elemento por meio de um conjunto de transições de estado.
 A Figura abaixo descreve os estados do Carrinho em funcionamento bem como possíveis transições.
 
-![Estado de Maquina](assets/DIAGRAMA DE ESTADOS 1.png)
+![Estado de Maquina](assets/DIAGRAMA%20DE%20ESTADOS%201.png)
 
 
 ## Referências
