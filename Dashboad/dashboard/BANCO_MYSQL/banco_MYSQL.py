@@ -18,7 +18,7 @@ def ale():
 aleatoria = 12
 
 def main():                                     #SENHA        #BASE DE DADOS
-    con = criar_conexao("localhost", "root", "34841984Full@", "ProjetoPI1") 
+    con = criar_conexao("localhost", "root", "SENHA", "ProjetoPI1") 
     for i in range(aleatoria):
         valores = ale()  # Chama a função ale() e armazena os valores retornados
         insere_usuario(con, *valores)  # Desempacota os valores e passa para a função insere_usuario()
