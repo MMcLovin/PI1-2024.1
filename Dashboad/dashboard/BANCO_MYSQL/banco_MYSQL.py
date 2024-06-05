@@ -10,21 +10,19 @@ def insere_usuario(con, numPercurso, velEsquerda, velDireita , aceleracaoX, acel
     cursor.close()
     con.commit()
 
-aleatoria = 12
-
 def ale():
     # Gerando uma tupla com 12 números de ponto flutuante aleatórios entre 0 e 1
     tupla = tuple(random.uniform(0, 1) for _ in range(12))
     return tupla
 
+aleatoria = 12
 
 def main():
     con = criar_conexao("localhost", "root", "34841984Full@", "ProjetoPI1")
     for i in range(aleatoria):
-        k = ale
-        insere_usuario(con, ale[1], ale[2], ale[3], ale[4], ale[5], ale[6], ale[7], ale[8], ale[9], ale[10])
-        fechar_conexao(con)
-
+        valores = ale()  # Chama a função ale() e armazena os valores retornados
+        insere_usuario(con, *valores)  # Desempacota os valores e passa para a função insere_usuario()
+    fechar_conexao(con)  # Deve ser fora do loop
 
 if __name__ == "__main__":
     main()
