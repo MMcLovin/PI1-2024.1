@@ -21,11 +21,12 @@ def ale2():
     # Gerando uma tupla com 12 números de ponto flutuante aleatórios entre 0 e 1
     lista = []
     for i in range(12):
-        if i == 7:
-            lista.append(random.uniform(0, 10))
-        else:
+        if i != 7:
             lista.append(random.uniform(0, 1))
+        else:
+            lista.append(random.uniform(0, 10))
     tupla = tuple(lista)
+
     return tupla
 
 aleatoria = 12
@@ -35,6 +36,7 @@ def fetch_data(con, sql):
     cursor.execute(sql)
     tuple_list = cursor.fetchall()
     cursor.close()
+
     return tuple_list
 
 def create_list(con, tuple_list, list1):
@@ -44,8 +46,16 @@ def create_list(con, tuple_list, list1):
         except AttributeError:
             list1.append(tuple[0])
     
-    return list1
+def print_velocities(con, v_left, v_right, time):
+    print("V_left  V_right   Time")
+    for i, j, k in zip(v_left, v_right, time):
+        print(f"{i}     {j}     {k}")
 
+def append_data(con, data, sql):
+    for i in range(3):
+        tuple_list = fetch_data(con, sql[i])
+        create_list(con, tuple_list, data[i])
+    
 def get_velocities(con):
     # nos dados reais, os valores já vão estar em ordem de tempo
     sql1 = "SELECT velEsquerda FROM carrinho ORDER BY tempoPercuso;"
@@ -56,18 +66,11 @@ def get_velocities(con):
     v_right = []
     time = []
 
-    tuple_list = fetch_data(con, sql1)
-    v_left = create_list(con, tuple_list, v_left)
-    
-    tuple_list = fetch_data(con, sql2)
-    v_right = create_list(con, tuple_list, v_right)
+    sql = [sql1, sql2, sql3]
+    data = [v_left, v_right, time]
 
-    tuple_list = fetch_data(con, sql3)
-    time = create_list(con, tuple_list, time)
-
-    print("V_left  V_right   Time")
-    for i, j, k in zip(v_left, v_right, time):
-        print(f"{i}     {j}     {k}")
+    # o python passa por referência, então não precisa retornar a lista
+    append_data(con, data, sql)
 
     plot_velocities(time, v_left, v_right)
 
@@ -83,7 +86,7 @@ def plot_velocities(time, v_left, v_right):
     plt.grid(True)
     plt.show()
 
-def main():                                     #SENHA        #BASE DE DADOS
+def main():                               #SENHA  #BASE DE DADOS
     con = criar_conexao("localhost", "root", "", "ProjetoPI1") 
     #for i in range(aleatoria):
     #    valores = ale2()  # Chama a função ale() e armazena os valores retornados
