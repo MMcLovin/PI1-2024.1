@@ -52,7 +52,7 @@ def print_velocities(con, v_left, v_right, time):
         print(f"{i}     {j}     {k}")
 
 def append_data(con, data, sql):
-    for i in range(3):
+    for i in range(len(sql)):
         tuple_list = fetch_data(con, sql[i])
         create_list(con, tuple_list, data[i])
     
