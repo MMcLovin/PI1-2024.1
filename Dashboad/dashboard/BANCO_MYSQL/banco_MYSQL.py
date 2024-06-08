@@ -17,19 +17,18 @@ def ale():
     return tupla
 
 # o tempo tá como 0 usando ale(), mas ele deve ser um tempo condizente com o do percurso
-def ale2():
+def ale2(time):
     # Gerando uma tupla com 12 números de ponto flutuante aleatórios entre 0 e 1
     lista = []
     for i in range(12):
         if i != 7:
             lista.append(random.uniform(0, 1))
         else:
-            lista.append(random.uniform(0, 10))
+            lista.append(time)
+
     tupla = tuple(lista)
 
     return tupla
-
-aleatoria = 12
 
 def fetch_data(con, sql):
     cursor = con.cursor()
@@ -39,12 +38,13 @@ def fetch_data(con, sql):
 
     return tuple_list
 
-def create_list(con, tuple_list, list1):
+def create_list(con, tuple_list, data_list):
     for tuple in tuple_list:
-        try:
-            list1.append(tuple[0].total_seconds())
-        except AttributeError:
-            list1.append(tuple[0])
+        for value, robot_att in zip(tuple, data_list):            
+            try:
+                robot_att.append(value.total_seconds())
+            except AttributeError:
+                robot_att.append(float(value))
     
 def print_velocities(con, v_left, v_right, time):
     print("V_left  V_right   Time")
@@ -52,24 +52,21 @@ def print_velocities(con, v_left, v_right, time):
         print(f"{i}     {j}     {k}")
 
 def append_data(con, data, sql):
-    for i in range(len(sql)):
-        tuple_list = fetch_data(con, sql[i])
-        create_list(con, tuple_list, data[i])
+    tuple_list = fetch_data(con, sql)
+    create_list(con, tuple_list, data)
     
 def get_velocities(con):
     # nos dados reais, os valores já vão estar em ordem de tempo
-    sql1 = "SELECT velEsquerda FROM carrinho ORDER BY tempoPercuso;"
-    sql2 = "SELECT velDireita FROM carrinho ORDER BY tempoPercuso;"
-    sql3 = "SELECT tempoPercuso FROM carrinho ORDER BY tempoPercuso;"
+    sql = "SELECT velEsquerda, velDireita, tempoPercuso, numPercurso FROM carrinho ORDER BY tempoPercuso;"
 
     v_left = []
     v_right = []
     time = []
+    lap = []
 
-    sql = [sql1, sql2, sql3]
-    data = [v_left, v_right, time]
+    data = [v_left, v_right, time, lap]
 
-    # o python passa por referência, então não precisa retornar a lista
+    # o python passa os parametros por referência, então não precisa retornar a lista
     append_data(con, data, sql)
 
     plot_velocities(time, v_left, v_right)
@@ -77,8 +74,8 @@ def get_velocities(con):
 
 def plot_velocities(time, v_left, v_right):
     plt.figure(figsize=(10, 5))
-    plt.plot(time, v_left, label='Left Velocity', color='blue')
-    plt.plot(time, v_right, label='Right Velocity', color='red')
+    plt.plot(time, v_left, label='Left Velocity', color='blue', linestyle='solid', marker='o')
+    plt.plot(time, v_right, label='Right Velocity', color='red', linestyle='solid', marker='o')
     plt.title('Left and Right Velocities over Time')
     plt.xlabel('Time')
     plt.ylabel('Velocity')
@@ -88,9 +85,14 @@ def plot_velocities(time, v_left, v_right):
 
 def main():                               #SENHA  #BASE DE DADOS
     con = criar_conexao("localhost", "root", "", "ProjetoPI1") 
+
+    # Quantidade de registros aleatórios a serem inseridos
+    aleatoria = 20  
+    time = 0
     #for i in range(aleatoria):
-    #    valores = ale2()  # Chama a função ale() e armazena os valores retornados
-    #    insere_usuario(con, *valores)  # Desempacota os valores e passa para a função insere_usuario()
+    #    valores = ale2(time)  # Chama a função ale() e armazena os valores retornados
+    #    insere_usuario(con, *valores)  # Desempacota os valores e passa para a função 
+    #    time += 1
     
     get_velocities(con)
     
