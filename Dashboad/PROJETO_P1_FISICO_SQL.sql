@@ -10,7 +10,7 @@ CREATE TABLE CARRINHO(
     aceleracaoY DECIMAL(5,3),
     aceleracaoZ DECIMAL(5,3),
     consumoBat DECIMAL(10,2),
-    tempoPercuso TIME,
+    indece BIGINT,
     giroscopioX DECIMAL(5,3),
     giroscopioY DECIMAL(5,3),
     giroscopioZ DECIMAL(5,3),
