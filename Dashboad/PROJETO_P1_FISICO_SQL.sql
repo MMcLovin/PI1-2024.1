@@ -3,6 +3,7 @@ use ProjetoPI1;
 
 
 CREATE TABLE CARRINHO(
+    indece BIGINT,
     numPercurso INT,
     velEsquerda DECIMAL(5,2),
     velDireita DECIMAL(5,2),
@@ -10,7 +11,6 @@ CREATE TABLE CARRINHO(
     aceleracaoY DECIMAL(5,3),
     aceleracaoZ DECIMAL(5,3),
     consumoBat DECIMAL(10,2),
-    indece BIGINT,
     giroscopioX DECIMAL(5,3),
     giroscopioY DECIMAL(5,3),
     giroscopioZ DECIMAL(5,3),
