@@ -50,10 +50,6 @@ def print_velocities(con, v_left, v_right, time):
     print("V_left  V_right   Time")
     for i, j, k in zip(v_left, v_right, time):
         print(f"{i}     {j}     {k}")
-
-def append_data(con, data, sql):
-    tuple_list = fetch_data(con, sql)
-    create_list(con, tuple_list, data)
     
 def get_velocities(con):
     # nos dados reais, os valores já vão estar em ordem de tempo
@@ -63,11 +59,12 @@ def get_velocities(con):
     v_right = []
     time = []
     lap = []
-
     data = [v_left, v_right, time, lap]
 
+    tuple_list = fetch_data(con, sql)
+
     # o python passa os parametros por referência, então não precisa retornar a lista
-    append_data(con, data, sql)
+    create_list(con, tuple_list, data)
 
     plot_velocities(time, v_left, v_right)
 
