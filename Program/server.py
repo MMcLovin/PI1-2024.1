@@ -20,9 +20,11 @@ async def send_data(websocket, path):
 
             if number == 1:
                 indece = 0
-                volta = 1                
-                dados = dadoAleatorio()
+                volta = 1            
+
                 while True:
+                    dados = dadoAleatorio()
+                    
                     data = {
                         'indece' : indece,
                         'numPercurso' : volta,
