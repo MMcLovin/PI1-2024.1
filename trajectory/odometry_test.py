@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 import random
 
 # global variables
-R=3.25      # wheel radius
-L=16        # distance between the wheels
-n=192       # number of encoder ticks per wheel revolution
+R=67.25/200                # wheel radius
+L=(220 - 20.19)/100        # distance between the wheels
+n=21                       # number of encoder ticks per wheel revolution, with 192 ticks, the velocity needed to do a 90 degree turn is 236
 
 def generate_xy(v_left, v_right):
     x_pos = [0]
@@ -44,10 +44,10 @@ def simulate_turns(v_left, v_right):
     for i in range(len(v_left)):
         turn = random.randint(0, 1)
         # turn left
-        if i % 6 == 0 and i != 0:
+        if i % 20 == 0 and i != 0:
             v_left[i] = 0
-            v_right[i] = 236
-
+            v_right[i] = 31.2
+            #25
 def main():
     #con = criar_conexao("localhost", "root", "", "ProjetoPI1")
 
@@ -56,8 +56,8 @@ def main():
     #v_right = data[1]
 
     # when both velocities are the same, the robot moves in a straight line
-    v_left = [0.2, 0.14, 0.74, 0.52, 0.21, 0.34, 0.92, 0.34, 0.05, 0.49, 0.74, 0.27, 0.78, 0.32, 0.21, 0.75, 0.38, 0.71, 0.0, 0.8, 1, 2, 3]
-    v_right = [0.2, 0.14, 0.74, 0.52, 0.21, 0.34, 0.92, 0.34, 0.05, 0.49, 0.74, 0.27, 0.78, 0.32, 0.21, 0.75, 0.38, 0.71, 236, 0.8, 1, 2, 3]
+    v_left = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    v_right = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     
     # duh
     simulate_turns(v_left, v_right)
