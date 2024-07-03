@@ -110,23 +110,19 @@ def get_accelerations(con):
     plot_accelerations(df["indece"], df["aceleracao_absoluta"], df["numPercurso"])
     
 def plot_accelerations(time, acc_x, acc_y, acc_z, lap):
+    # Criar uma nova figura
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    # Limpar o subplot antes de plotar novos dados
-    ax.clear()
-
     ax.set_xlim(0, max(time))
-    ax.set_ylim(min(min(acc_x), min(acc_y), min(acc_z)), max(max(acc_x), max(acc_y), max(acc_z)))
+    ax.set_ylim(min(acc_abs), max(acc_abs))
 
     # Plotar dados no subplot
-    ax.plot(time, acc_x, label='Acceleration X', color='blue', linestyle='solid', marker='o')
-    ax.plot(time, acc_y, label='Acceleration Y', color='red', linestyle='solid', marker='o')
-    ax.plot(time, acc_z, label='Acceleration Z', color='green', linestyle='solid', marker='o')
+    ax.plot(time, acc_abs, label='Aceleração Absoluta', color='blue', linestyle='solid', marker='o')
 
     # Configurar título, labels e outros elementos do subplot
-    ax.set_title(f"Aceleração ao longo do tempo")
+    ax.set_title(f"Aceleração Absoluta ao longo do tempo")
     ax.set_xlabel('Tempo')
-    ax.set_ylabel('Aceleração')
+    ax.set_ylabel('Aceleração Absoluta')
     ax.legend()
     ax.grid(True)
 
@@ -134,9 +130,11 @@ def plot_accelerations(time, acc_x, acc_y, acc_z, lap):
     plt.tight_layout()
 
     # Mostrar o gráfico na tela
-    #plt.show()
-    plt.savefig('aceleracao.png')  # Salvar o gráfico como um arquivo de imagem
+    plt.show()
 
+    # Fechar a figura para liberar memória
+    plt.close(fig)
+    
 # TREJETORIA
 def generate_xy(con):
     x_pos = [0]
