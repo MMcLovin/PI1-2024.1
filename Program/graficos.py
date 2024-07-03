@@ -10,9 +10,9 @@ from db_service import get_aceleracao
 streamlit.set_page_config(page_title="Projeto PI1")
 
 # global variables
-R=3.25      # robot wheel radius
-L=16        # distance between the robot wheels
-n=192       # number of encoder ticks per wheel revolution
+R=3.3625      # robot wheel radius
+L=21.2        # distance between the robot wheels
+n=20       # number of encoder ticks per wheel revolution
 
 
 
