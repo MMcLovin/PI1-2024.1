@@ -101,11 +101,14 @@ def plot_speed(time, velE, velD):
 
 # ACELERAÇÃO
 def get_accelerations(con):
-    # nos dados reais, os valores já vão estar em ordem de tempo
-    df = db.get_aceleracao(con)
-    
-    plot_accelerations(df["indece"], df["aceleracaoX"], df["aceleracaoY"], df["aceleracaoZ"], df["numPercurso"])
+    # Nos dados reais, os valores já vão estar em ordem de tempo
+    df = get_aceleracao(con)
 
+    # Calcular a aceleração absoluta
+    df['aceleracao_absoluta'] = (df['aceleracaoX']**2 + df['aceleracaoY']**2 + df['aceleracaoZ']**2)**0.5 # --> toda a equação está dentro da raiz 
+    
+    plot_accelerations(df["indece"], df["aceleracao_absoluta"], df["numPercurso"])
+    
 def plot_accelerations(time, acc_x, acc_y, acc_z, lap):
     fig, ax = plt.subplots(figsize=(10, 5))
 
