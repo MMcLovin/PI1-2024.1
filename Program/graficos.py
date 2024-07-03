@@ -5,6 +5,7 @@ import numpy as np
 import conexao
 from decimal import Decimal
 import db_service as db
+from db_service import get_aceleracao
 
 streamlit.set_page_config(page_title="Projeto PI1")
 
