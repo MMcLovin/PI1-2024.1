@@ -1,6 +1,7 @@
 from decimal import Decimal
 import conexao
 import pandas as pd
+from conexao import fetch_data
 
 
 # Responsável por criar consulta e retornar Dataframe
