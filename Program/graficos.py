@@ -5,12 +5,13 @@ import numpy as np
 import conexao
 from decimal import Decimal
 import db_service as db
+from db_service import get_aceleracao
 
 streamlit.set_page_config(page_title="Projeto PI1")
 
 # global variables
-R=3.25      # wheel radius
-L=16        # distance between the wheels
+R=3.25      # robot wheel radius
+L=16        # distance between the robot wheels
 n=192       # number of encoder ticks per wheel revolution
 
 
@@ -77,6 +78,7 @@ def plot_speed(time, velE, velD):
     # Limpar o subplot antes de plotar novos dados
     ax.clear()
 
+    # Ajustando dimensões dos eixos para os valors (min, max) 
     ax.set_xlim(0, max(time))
     ax.set_ylim(min(min(velE), min(velD)), max(max(velE), max(velD)))
 
