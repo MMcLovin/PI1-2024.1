@@ -109,7 +109,7 @@ def get_accelerations(con):
     
     plot_accelerations(df["indece"], df["aceleracao_absoluta"], df["numPercurso"])
     
-def plot_accelerations(time, acc_x, acc_y, acc_z, lap):
+def plot_accelerations(time, acc_abs, lap):
     # Criar uma nova figura
     fig, ax = plt.subplots(figsize=(10, 5))
 
