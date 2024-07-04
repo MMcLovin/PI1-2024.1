@@ -1,5 +1,6 @@
 import mysql.connector
 
+
 def criar_conexao(host, usuario, senha, banco):
     return mysql.connector.connect(host=host, user=usuario, password=senha, database=banco)
 
@@ -16,9 +17,7 @@ def fetch_data(con, sql):
     cursor.execute(sql)
     resutados = cursor.fetchall()
     cursor.close()
-
     return resutados
-
 
 def fechar_conexao(con):
     return con.close()
