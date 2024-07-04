@@ -18,7 +18,7 @@ def ale():
 aleatoria = 30
 
 def main():                                     #SENHA        #BASE DE DADOS
-    con = criar_conexao("localhost", "root", "34841984Full@", "projetopi1") 
+    con = criar_conexao("localhost", "root", "senha", "projetopi1") 
     for i in range(aleatoria):
         valores = ale()  # Chama a função ale() e armazena os valores retornados
         
