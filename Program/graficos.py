@@ -5,7 +5,8 @@ import numpy as np
 import conexao
 from decimal import Decimal
 import db_service as db
-from db_service import get_aceleracao
+from db_service import get_aceleracao, get_velocidade
+from banco_MYSQL import fechar_conexao, criar_conexao
 
 streamlit.set_page_config(page_title="Projeto PI1")
 
@@ -14,6 +15,10 @@ R=3.3625      # robot wheel radius
 L=21.2        # distance between the robot wheels
 n=20       # number of encoder ticks per wheel revolution
 
+# global variables
+# R=3.3625      # robot wheel radius
+# L=21.2        # distance between the robot wheels
+# n=20       # number of encoder ticks per wheel revolution
 
 
 with streamlit.container():
@@ -65,101 +70,39 @@ with streamlit.container():
 # Tempo de percurso
 # Consumo energético
 
-# VELOCIDADE
-def get_speed(con):
-
-    df = db.get_velocidade(con)
-    
-    plot_speed(df["indece"], df["velEsquerda"], df["velDireita"])
-
+# Funções de plotagem
 def plot_speed(time, velE, velD):
     fig, ax = plt.subplots(figsize=(10, 5))
-
-    # Limpar o subplot antes de plotar novos dados
     ax.clear()
-
-    # Ajustando dimensões dos eixos para os valors (min, max) 
     ax.set_xlim(0, max(time))
     ax.set_ylim(min(min(velE), min(velD)), max(max(velE), max(velD)))
-
-    # Plotar dados no subplot
     ax.plot(time, velE, label='Velocidade E', color='blue', linestyle='solid', marker='o')
     ax.plot(time, velD, label='Velocidade D', color='red', linestyle='solid', marker='o')
-    
-    # Configurar título, labels e outros elementos do subplot
     ax.set_title("Velocidade ao longo do tempo")
     ax.set_xlabel('Tempo')
     ax.set_ylabel('Velocidade')
     ax.legend()
     ax.grid(True)
-
-    # Ajustar layout dos subplots
     plt.tight_layout()
+    plt.savefig('velocidade.png')
+    plt.show()
+    plt.close(fig)
 
-    # Mostrar o gráfico na tela
-    #plt.show()
-    plt.savefig('velocidade.png')  # Salvar o gráfico como um arquivo de imagem
-
-
-# ACELERAÇÃO
-def get_accelerations(con):
-    # Nos dados reais, os valores já vão estar em ordem de tempo
-    df = get_aceleracao(con)
-
-    # Calcular a aceleração absoluta
-    df['aceleracao_absoluta'] = (df['aceleracaoX']**2 + df['aceleracaoY']**2 + df['aceleracaoZ']**2)**0.5 # --> toda a equação está dentro da raiz 
-    
-    plot_accelerations(df["indece"], df["aceleracao_absoluta"], df["numPercurso"])
-    
-def plot_accelerations(time, acc_abs, lap):
-    # Criar uma nova figura
+def plot_accelerations(time, acc_abs):
     fig, ax = plt.subplots(figsize=(10, 5))
-
+    ax.clear()
     ax.set_xlim(0, max(time))
     ax.set_ylim(min(acc_abs), max(acc_abs))
-
-    # Plotar dados no subplot
     ax.plot(time, acc_abs, label='Aceleração Absoluta', color='blue', linestyle='solid', marker='o')
-
-    # Configurar título, labels e outros elementos do subplot
     ax.set_title(f"Aceleração Absoluta ao longo do tempo")
     ax.set_xlabel('Tempo')
     ax.set_ylabel('Aceleração Absoluta')
     ax.legend()
     ax.grid(True)
-
-    # Ajustar layout dos subplots
     plt.tight_layout()
-
-    # Mostrar o gráfico na tela
+    plt.savefig('aceleracao.png')
     plt.show()
-
-    # Fechar a figura para liberar memória
     plt.close(fig)
-    
-# TREJETORIA
-def generate_xy(con):
-    x_pos = [0]
-    y_pos = [0]
-    theta = 0  # initial heading
-    
-    df = db.get_velocidade(con)
-    
-    for l, r in zip(df["velEsquerda"], df["velDireita"]):
-        dr = r * ((2 * np.pi * R) / n)  # distance traveled by the right wheel
-        dl = l * ((2 * np.pi * R) / n)  # distance traveled by the left wheel
-        d = (dr + dl) / 2               # total distance traveled by the middle point between the wheels
-        alfa = (dr - dl) / L            # change in heading
-
-        theta += alfa  # update heading
-        x = d * np.cos(theta)
-        y = d * np.sin(theta)
-
-        # update the position relative to the last position
-        x_pos.append(x_pos[-1] + x)
-        y_pos.append(y_pos[-1] + y)
-
-    plot_trajectory(x_pos, y_pos)
 
 def plot_trajectory(x_pos, y_pos):
     plt.plot(x_pos, y_pos, marker='o', color='b', label='Trajectory')
@@ -168,18 +111,45 @@ def plot_trajectory(x_pos, y_pos):
     plt.title('Trajectory of Line Follower Robot')
     plt.grid(True)
     plt.savefig("trajetoria.png")
+    plt.show()
+    plt.close()
 
+# Funções principais
+def get_speed(con):
+    df = get_velocidade(con)
+    plot_speed(df["indece"], df["velEsquerda"], df["velDireita"])
+
+def get_accelerations(con):
+    df = get_aceleracao(con)
+    df['aceleracao_absoluta'] = (df['aceleracaoX']**2 + df['aceleracaoY']**2 + df['aceleracaoZ']**2)**0.5
+    plot_accelerations(df["indece"], df["aceleracao_absoluta"])
+
+def generate_xy(con):
+    x_pos = [0]
+    y_pos = [0]
+    theta = 0  # initial heading
+    df = get_velocidade(con)
+    for l, r in zip(df["velEsquerda"], df["velDireita"]):
+        dr = r * ((2 * np.pi * 3.25) / 192)  # distance traveled by the right wheel
+        dl = l * ((2 * np.pi * 3.25) / 192)  # distance traveled by the left wheel
+        d = (dr + dl) / 2               # total distance traveled by the middle point between the wheels
+        alfa = (dr - dl) / 16           # change in heading
+        theta += alfa  # update heading
+        x = d * np.cos(theta)
+        y = d * np.sin(theta)
+        x_pos.append(x_pos[-1] + x)
+        y_pos.append(y_pos[-1] + y)
+    plot_trajectory(x_pos, y_pos)
 
 def criarGrafico(conexao, numGrafico):
-    match numGrafico:
-        case 1:
-            get_speed(conexao)
-        case 2:
-            get_accelerations(conexao)
-        case 3:
-            print(3)
-        case 4:
-            generate_xy(conexao)
+    if numGrafico == 1:
+        get_speed(conexao)
+    elif numGrafico == 2:
+        get_accelerations(conexao)
+    elif numGrafico == 3:
+        print("Consumo energético não implementado.")
+    elif numGrafico == 4:
+        generate_xy(conexao)
 
 def main():
     print("Escolha o gráfico a ser gerado (apenas o número):")
@@ -187,14 +157,11 @@ def main():
     print("2 - Aceleração")
     print("3 - Consumo energético")
     print("4 - Trajetória")
-
     numGrafico = int(input())
-
-    con = conexao.criar_conexao("localhost", "samuel", "010718", "projetopi1")
-
+    con = criar_conexao("localhost", "root", "senha", "projetopi1")
     criarGrafico(con, numGrafico)
-
-
+    fechar_conexao(con)
 
 if __name__ == '__main__':
     main()
+
