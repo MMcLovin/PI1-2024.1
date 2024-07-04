@@ -12,13 +12,13 @@ def insere_usuario(con, indece, numPercurso, velEsquerda, velDireita , aceleraca
 
 def ale():
     # Gerando uma tupla com 11 números de ponto flutuante aleatórios entre 0 e 1
-    tupla = tuple(random.uniform(0, 1) for _ in range(11))
+    tupla = tuple(random.uniform(0, 10) for _ in range(11))
     return tupla
 
-aleatoria = 12
+aleatoria = 30
 
 def main():                                     #SENHA        #BASE DE DADOS
-    con = criar_conexao("localhost", "user", "123456789", "projetopi1") 
+    con = criar_conexao("localhost", "root", "34841984Full@", "projetopi1") 
     for i in range(aleatoria):
         valores = ale()  # Chama a função ale() e armazena os valores retornados
         
@@ -28,3 +28,4 @@ def main():                                     #SENHA        #BASE DE DADOS
 
 if __name__ == "__main__":
     main()
+
