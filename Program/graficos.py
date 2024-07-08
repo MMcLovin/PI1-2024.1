@@ -3,10 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import conexao
-from decimal import Decimal
-import db_service as db
-from db_service import get_aceleracao, get_velocidade
-from banco_MYSQL import fechar_conexao, criar_conexao
+import Program.servico_db as db
+import servico_db
 
 streamlit.set_page_config(page_title="Projeto PI1")
 
