@@ -8,9 +8,9 @@ import servico_db as servico
 streamlit.set_page_config(page_title="Projeto PI1")
 
 # global variables
-R=3.3625      # robot wheel radius
-L=21.2        # distance between the robot wheels
-n=20       # number of encoder ticks per wheel revolution
+R=3.3625        # robot wheel radius
+L=21.2          # distance between the robot wheels
+n=20            # number of encoder ticks per wheel revolution
 
 
 # Funções de plotagem
@@ -59,20 +59,20 @@ def plot_trajectory(x_pos, y_pos):
 
 # Funções principais
 def gerar_grafico_trajetoria(df):
-    x_pos = [0]
-    y_pos = [0]
-    theta = 0  # initial heading
+    x_pos = [0]         # initial x position
+    y_pos = [0]         # initial y position
+    theta = 0           # initial heading
 
     for l, r in zip(df["velEsquerda"], df["velDireita"]):
-        dr = r * ((2 * np.pi * 3.25) / 192)  # distance traveled by the right wheel
-        dl = l * ((2 * np.pi * 3.25) / 192)  # distance traveled by the left wheel
+        dr = r * ((2 * np.pi * R) / n)  # distance traveled by the right wheel
+        dl = l * ((2 * np.pi * R) / n)  # distance traveled by the left wheel
         d = (dr + dl) / 2               # total distance traveled by the middle point between the wheels
-        alfa = (dr - dl) / 16           # change in heading
-        theta += alfa  # update heading
-        x = d * np.cos(theta)
-        y = d * np.sin(theta)
-        x_pos.append(x_pos[-1] + x)
-        y_pos.append(y_pos[-1] + y)
+        alfa = (dr - dl) / L           # change in heading
+        theta += alfa                  # update heading
+        x = d * np.cos(theta)          # distance traveled in x direction
+        y = d * np.sin(theta)          # distance traveled in y direction
+        x_pos.append(x_pos[-1] + x)    # update x position based on the last x position
+        y_pos.append(y_pos[-1] + y)    # update y position based on the last y position
     plot_trajectory(x_pos, y_pos)
 
 
@@ -109,6 +109,8 @@ def criarGrafico(conexao, numPercurso):
     dfAceleracao = servico.buscar_aceleracao(conexao, numPercurso)
     dfCorrente = servico.buscar_corrente(conexao, numPercurso)
 
+    dfVelocidade['velLinear'] = np.pi * R * (dfVelocidade['velEsquerda'] + dfVelocidade['velDireita']) / 60
+
     dfAceleracao['aceleracao_absoluta'] = (dfAceleracao['aceleracaoX']**2 + dfAceleracao['aceleracaoY']**2 + dfAceleracao['aceleracaoZ']**2)**0.5
     
     # DESCOBRIR FORMA DE AJUSTART OS GRAFICOS PARA NÃO FICAREM MUITO POLUIDOS
@@ -117,7 +119,7 @@ def criarGrafico(conexao, numPercurso):
     dfCorrente = dfCorrente.iloc[:100]
     
     # ALTERAR PARA TEMPO DEPOIS DE VALIDA COM INDECE
-    gerar_grafico_velocidade(dfVelocidade["indece"], dfVelocidade["velEsquerda"], dfVelocidade["velDireita"])
+    gerar_grafico_velocidade(dfVelocidade["indece"], dfVelocidade["velLinear"])
     gerar_grafico_aceleracao(dfAceleracao["indece"], dfAceleracao["aceleracao_absoluta"])
     gerar_grafico_corrente(dfCorrente["indece"], dfCorrente["numPercurso"], dfCorrente["corrente"])
     gerar_grafico_trajetoria(dfVelocidade)
