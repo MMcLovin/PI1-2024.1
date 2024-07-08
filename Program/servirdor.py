@@ -19,30 +19,24 @@ async def send_data(websocket, path):
             print(number)
 
             if number == 1:
-                indece = 0
-                volta = 1            
 
                 while True:
                     dados = dadoAleatorio()
                     
                     data = {
-                        'indece' : indece,
-                        'numPercurso' : volta,
                         'velEsquerda' : dados[1],
                         'velDireita' : dados[2], 
                         'aceleracaoX' : dados[3],
                         'aceleracaoY' : dados[4],
                         'aceleracaoZ' : dados[5],
-                        'consumoBat' : dados[6],
+                        'corrente' : dados[6],
                         'giroscopioX' : dados[7],
                         'giroscopioY' : dados[8],
-                        'giroscopioZ' : dados[9],
-                        'RPM' : dados[10]
-                        
+                        'giroscopioZ' : dados[9],                   
+                        'temperatura' : dados[10],
                     }
                     await websocket.send(json.dumps(data))
-                    await asyncio.sleep(1)  # Enviar dados a cada 1 segundo
-                    indece += 1
+                    await asyncio.sleep(0,1)  # Enviar dados a cada 0,1 segundo
 
         except ValueError:
             # Caso a mensagem não seja um número, envia uma mensagem de erro
