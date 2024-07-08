@@ -2,9 +2,8 @@ import streamlit
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import conexao
-import Program.servico_db as db
-import servico_db
+import conexao as db
+import servico_db as servico
 
 streamlit.set_page_config(page_title="Projeto PI1")
 
@@ -13,63 +12,9 @@ R=3.3625      # robot wheel radius
 L=21.2        # distance between the robot wheels
 n=20       # number of encoder ticks per wheel revolution
 
-# global variables
-# R=3.3625      # robot wheel radius
-# L=21.2        # distance between the robot wheels
-# n=20       # number of encoder ticks per wheel revolution
-
-
-with streamlit.container():
-    streamlit.subheader("Dados estatísticos do Carrinho")
-
-with streamlit.container():
-
-    # Dados de exemplo: consumo de energia da bateria
-    consumo_energia = 450  # em watts
-    capacidade_bateria = 1000  # em watts
-
-    # Calculando a porcentagem de consumo de energia
-    porcentagem_consumida = (consumo_energia / capacidade_bateria) * 100
-
-    # Criando um DataFrame para facilitar a visualização
-    data_consumo = pd.DataFrame({
-        'Consumo de Energia': [consumo_energia],
-        'Capacidade da Bateria': [capacidade_bateria]
-    })
-
-    # Criando o gráfico de barras
-    streamlit.subheader('Gráfico de Consumo Energético')
-    streamlit.bar_chart(data_consumo)
-
-    # Mostrando a porcentagem de consumo de energia
-    streamlit.write(f"Consumo de Energia: {consumo_energia} W")
-    streamlit.write(f"Capacidade da Bateria: {capacidade_bateria} W")
-    streamlit.write(f"Porcentagem de Consumo: {porcentagem_consumida:.2f}%")
-
-with streamlit.container():
-    # Criando dados de exemplo
-    data = pd.DataFrame({
-        'x': range(1, 11),
-        'y': np.random.randint(1, 20, size=10)
-    })
-    # Criando um gráfico de linhas
-    streamlit.subheader('Velocidade Instantãnea')
-    fig, ax = plt.subplots()
-    ax.plot(data['x'], data['y'])
-    # Ajustando o tamanho da figura
-    fig.set_size_inches(8, 4)  # Largura, Altura
-    streamlit.pyplot(fig)
-
-# streamlit run DashBoard/view/main.py
-    
-# Trajetória percorrida
-# Velocidade instantânea
-# Aceleração instantânea
-# Tempo de percurso
-# Consumo energético
 
 # Funções de plotagem
-def plot_speed(time, velE, velD):
+def gerar_grafico_velocidade(time, velE, velD):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.clear()
     ax.set_xlim(0, max(time))
@@ -86,7 +31,7 @@ def plot_speed(time, velE, velD):
     plt.show()
     plt.close(fig)
 
-def plot_accelerations(time, acc_abs):
+def gerar_grafico_aceleracao(time, acc_abs):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.clear()
     ax.set_xlim(0, max(time))
@@ -113,20 +58,11 @@ def plot_trajectory(x_pos, y_pos):
     plt.close()
 
 # Funções principais
-def get_speed(con):
-    df = get_velocidade(con)
-    plot_speed(df["indece"], df["velEsquerda"], df["velDireita"])
-
-def get_accelerations(con):
-    df = get_aceleracao(con)
-    df['aceleracao_absoluta'] = (df['aceleracaoX']**2 + df['aceleracaoY']**2 + df['aceleracaoZ']**2)**0.5
-    plot_accelerations(df["indece"], df["aceleracao_absoluta"])
-
-def generate_xy(con):
+def gerar_grafico_trajetoria(df):
     x_pos = [0]
     y_pos = [0]
     theta = 0  # initial heading
-    df = get_velocidade(con)
+
     for l, r in zip(df["velEsquerda"], df["velDireita"]):
         dr = r * ((2 * np.pi * 3.25) / 192)  # distance traveled by the right wheel
         dl = l * ((2 * np.pi * 3.25) / 192)  # distance traveled by the left wheel
@@ -139,26 +75,63 @@ def generate_xy(con):
         y_pos.append(y_pos[-1] + y)
     plot_trajectory(x_pos, y_pos)
 
-def criarGrafico(conexao, numGrafico):
-    if numGrafico == 1:
-        get_speed(conexao)
-    elif numGrafico == 2:
-        get_accelerations(conexao)
-    elif numGrafico == 3:
-        print("Consumo energético não implementado.")
-    elif numGrafico == 4:
-        generate_xy(conexao)
+
+def gerar_grafico_corrente(time, numPercurso, corrente):
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    # Limpar o subplot antes de plotar novos dados
+    ax.clear()
+
+    ax.set_xlim(0, max(time))
+    ax.set_ylim(min(corrente), max(corrente))
+
+    # Plotar dados no subplot
+    ax.plot(time, corrente, label='Acceleration X', color='blue', linestyle='solid', marker='o')
+    # Configurar título, labels e outros elementos do subplot
+    ax.set_title(f"Corrente ao longo do tempo")
+    ax.set_xlabel('Tempo')
+    ax.set_ylabel('Corrente')
+    ax.legend()
+    ax.grid(True)
+
+    # Ajustar layout dos subplots
+    plt.tight_layout()
+
+    # Mostrar o gráfico na tela
+    #plt.show()
+    plt.savefig('corrente.png')  # Salvar o gráfico como um arquivo de imagem
+
+
+def criarGrafico(conexao, numPercurso):
+
+    # Buscar dados
+    dfVelocidade = servico.buscar_velocidade(conexao, numPercurso)
+    dfAceleracao = servico.buscar_aceleracao(conexao, numPercurso)
+    dfCorrente = servico.buscar_corrente(conexao, numPercurso)
+
+    dfAceleracao['aceleracao_absoluta'] = (dfAceleracao['aceleracaoX']**2 + dfAceleracao['aceleracaoY']**2 + dfAceleracao['aceleracaoZ']**2)**0.5
+    
+    # DESCOBRIR FORMA DE AJUSTART OS GRAFICOS PARA NÃO FICAREM MUITO POLUIDOS
+    dfVelocidade = dfVelocidade.iloc[:100]
+    dfAceleracao = dfAceleracao.iloc[:100]
+    dfCorrente = dfCorrente.iloc[:100]
+    
+    # ALTERAR PARA TEMPO DEPOIS DE VALIDA COM INDECE
+    gerar_grafico_velocidade(dfVelocidade["indece"], dfVelocidade["velEsquerda"], dfVelocidade["velDireita"])
+    gerar_grafico_aceleracao(dfAceleracao["indece"], dfAceleracao["aceleracao_absoluta"])
+    gerar_grafico_corrente(dfCorrente["indece"], dfCorrente["numPercurso"], dfCorrente["corrente"])
+    gerar_grafico_trajetoria(dfVelocidade)
 
 def main():
-    print("Escolha o gráfico a ser gerado (apenas o número):")
-    print("1 - Velocidade")
-    print("2 - Aceleração")
-    print("3 - Consumo energético")
-    print("4 - Trajetória")
-    numGrafico = int(input())
-    con = criar_conexao("localhost", "root", "senha", "projetopi1")
-    criarGrafico(con, numGrafico)
-    fechar_conexao(con)
+    print("Escolha o numero do percurso para gerar gráficos (apenas o número):")
+    
+    numPercuros = int(input())
+
+    con = db.criar_conexao("localhost", "user", "password", "projetopi1")
+
+    criarGrafico(con, numPercuros)
+
+    db.fechar_conexao(con)
 
 if __name__ == '__main__':
     main()
