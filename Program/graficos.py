@@ -11,16 +11,17 @@ streamlit.set_page_config(page_title="Projeto PI1")
 R=3.3625        # robot wheel radius
 L=21.2          # distance between the robot wheels
 n=20            # number of encoder ticks per wheel revolution
+INTERVALO_TEMPO = 0.1 # segundos
 
 
 # Funções de plotagem
-def gerar_grafico_velocidade(time, velE, velD):
+def gerar_grafico_velocidade(time, velocidade):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.clear()
     ax.set_xlim(0, max(time))
-    ax.set_ylim(min(min(velE), min(velD)), max(max(velE), max(velD)))
-    ax.plot(time, velE, label='Velocidade E', color='blue', linestyle='solid', marker='o')
-    ax.plot(time, velD, label='Velocidade D', color='red', linestyle='solid', marker='o')
+    ax.set_ylim(velocidade.min(), velocidade.max())
+    ax.plot(time, velocidade, label='Velocidade E', color='blue', linestyle='solid', marker='o')
+    #ax.plot(time, velD, label='Velocidade D', color='red', linestyle='solid', marker='o')
     ax.set_title("Velocidade ao longo do tempo")
     ax.set_xlabel('Tempo')
     ax.set_ylabel('Velocidade')
@@ -48,14 +49,29 @@ def gerar_grafico_aceleracao(time, acc_abs):
     plt.close(fig)
 
 def plot_trajectory(x_pos, y_pos):
-    plt.plot(x_pos, y_pos, marker='o', color='b', label='Trajectory')
-    plt.xlabel('X Position')
-    plt.ylabel('Y Position')
-    plt.title('Trajectory of Line Follower Robot')
-    plt.grid(True)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.clear()
+
+    ax.plot(x_pos, y_pos, label='Trajetoria', color='blue', linestyle='solid', marker='o')
+    ax.set_title(f"Trajetória")
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.legend()
+    ax.grid(True)
+    plt.tight_layout()
     plt.savefig("trajetoria.png")
-    plt.show()
-    plt.close()
+    plt.close(fig)
+
+
+
+    # plt.plot(x_pos, y_pos, marker='o', color='b', label='Trajectory')
+    # plt.xlabel('X Position')
+    # plt.ylabel('Y Position')
+    # plt.title('Trajectory of Line Follower Robot')
+    # plt.grid(True)
+    # plt.savefig("trajetoria.png")
+    # plt.show()
+    # plt.close()
 
 # Funções principais
 def gerar_grafico_trajetoria(df):
@@ -64,15 +80,35 @@ def gerar_grafico_trajetoria(df):
     theta = 0           # initial heading
 
     for l, r in zip(df["velEsquerda"], df["velDireita"]):
-        dr = r * ((2 * np.pi * R) / n)  # distance traveled by the right wheel
-        dl = l * ((2 * np.pi * R) / n)  # distance traveled by the left wheel
+        # Converter RPM para rad/s 
+        w_l = (l * 2 * np.pi)/60
+        w_r = (r * 2 * np.pi)/60
+
+        # Calculo velocidade linear por meio de velocidade angular
+        vel_linear_l = w_l * R
+        vel_linear_r = w_r * R
+
+        # Calculo da distância usando (MRU)
+        dl = INTERVALO_TEMPO * vel_linear_l
+        dr = INTERVALO_TEMPO * vel_linear_r
+
+        
+
+        # x_pos.append(x_pos[-1] + dl1)    # update x position based on the last x position
+        # y_pos.append(y_pos[-1] + dr1)    # update y position based on the last y position
+
+
+        # dr = r * ((2 * np.pi * R) / n)  # distance traveled by the right wheel
+        # dl = l * ((2 * np.pi * R) / n)  # distance traveled by the left wheel
         d = (dr + dl) / 2               # total distance traveled by the middle point between the wheels
         alfa = (dr - dl) / L           # change in heading
-        theta += alfa                  # update heading
+        
         x = d * np.cos(theta)          # distance traveled in x direction
         y = d * np.sin(theta)          # distance traveled in y direction
-        x_pos.append(x_pos[-1] + x)    # update x position based on the last x position
-        y_pos.append(y_pos[-1] + y)    # update y position based on the last y position
+        x_pos.append(x_pos[-1] + abs(x))    # update x position based on the last x position
+        y_pos.append(y_pos[-1] + abs(y))    # update y position based on the last y position
+        print(dl, dr, theta, x, y)
+        theta += alfa                  # update heading
     plot_trajectory(x_pos, y_pos)
 
 
