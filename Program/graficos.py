@@ -14,14 +14,17 @@ n=20            # number of encoder ticks per wheel revolution
 
 
 # Funções de plotagem
-def gerar_grafico_velocidade(time, velE, velD):
+#def gerar_grafico_velocidade(time, velE, velD):
+def gerar_grafico_velocidade(time, velLinear):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.clear()
     ax.set_xlim(0, max(time))
-    ax.set_ylim(min(min(velE), min(velD)), max(max(velE), max(velD)))
-    ax.plot(time, velE, label='Velocidade E', color='blue', linestyle='solid', marker='o')
-    ax.plot(time, velD, label='Velocidade D', color='red', linestyle='solid', marker='o')
-    ax.set_title("Velocidade ao longo do tempo")
+    #ax.set_ylim( min( min(velLinear)), max(max(velE), max(velD)))
+    ax.set_ylim(velLinear.min(), velLinear.max() )
+    ax.plot(time, velLinear, label='Velocidade Linear', color='blue', linestyle='solid', marker='o')
+    #ax.plot(time, velE, label='Velocidade E', color='blue', linestyle='solid', marker='o')
+    #ax.plot(time, velD, label='Velocidade D', color='red', linestyle='solid', marker='o')
+    ax.set_title("Velocidade Linear ao longo do tempo")
     ax.set_xlabel('Tempo')
     ax.set_ylabel('Velocidade')
     ax.legend()
@@ -48,6 +51,7 @@ def gerar_grafico_aceleracao(time, acc_abs):
     plt.close(fig)
 
 def plot_trajectory(x_pos, y_pos):
+    plt.clear()
     plt.plot(x_pos, y_pos, marker='o', color='b', label='Trajectory')
     plt.xlabel('X Position')
     plt.ylabel('Y Position')
