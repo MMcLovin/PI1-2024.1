@@ -114,9 +114,9 @@ def criarGrafico(conexao, numPercurso):
     dfAceleracao['aceleracao_absoluta'] = (dfAceleracao['aceleracaoX']**2 + dfAceleracao['aceleracaoY']**2 + dfAceleracao['aceleracaoZ']**2)**0.5
     
     # DESCOBRIR FORMA DE AJUSTART OS GRAFICOS PARA NÃO FICAREM MUITO POLUIDOS
-    dfVelocidade = dfVelocidade.iloc[:100]
-    dfAceleracao = dfAceleracao.iloc[:100]
-    dfCorrente = dfCorrente.iloc[:100]
+    # dfVelocidade = dfVelocidade.iloc[:100]
+    # dfAceleracao = dfAceleracao.iloc[:100]
+    # dfCorrente = dfCorrente.iloc[:100]
     
     # ALTERAR PARA TEMPO DEPOIS DE VALIDA COM INDECE
     gerar_grafico_velocidade(dfVelocidade["indece"], dfVelocidade["velLinear"])
@@ -129,7 +129,7 @@ def main():
     
     numPercuros = int(input())
 
-    con = db.criar_conexao("localhost", "user", "password", "projetopi1")
+    con = db.criar_conexao("localhost", "samuel", "010718", "projetopi1")
 
     criarGrafico(con, numPercuros)
 
