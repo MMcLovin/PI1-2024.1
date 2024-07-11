@@ -169,7 +169,8 @@ def main():
     
     numPercuros = int(input())
 
-    con = db.criar_conexao("localhost", "samuel", "010718", "projetopi1")
+    con = db.criar_conexao("localhost", "samuel", "010718", "projetopi1") 
+    #con = db.criar_conexao("localhost", "root", "", "projetopi1")
 
     criarGrafico(con, numPercuros)
 

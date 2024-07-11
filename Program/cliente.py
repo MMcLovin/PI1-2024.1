@@ -19,6 +19,7 @@ async def start():
         await websocket.send("1")
 
         con = conexao.criar_conexao("localhost", "samuel", "010718", "projetopi1") 
+        #con = conexao.criar_conexao("localhost", "root", "", "projetopi1")
 
         indece = 1
 
