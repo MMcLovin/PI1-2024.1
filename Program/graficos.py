@@ -92,23 +92,27 @@ def gerar_grafico_trajetoria(df):
         dl = INTERVALO_TEMPO * vel_linear_l
         dr = INTERVALO_TEMPO * vel_linear_r
 
+        # alternativa independente do tempo (rot/s * perimetro da roda)
+        # dl = (l / 60) * 2 * np.pi * R 
+        # dr = (l / 60) * 2 * np.pi * R 
+
+        # distancia percorrida pelo ponto intermediario entre as rodas
+        d = (dr + dl) / 2              
+
+        # variação da orientação do robo 
+        alfa = (dr - dl) / L           
         
-
-        # x_pos.append(x_pos[-1] + dl1)    # update x position based on the last x position
-        # y_pos.append(y_pos[-1] + dr1)    # update y position based on the last y position
-
-
-        # dr = r * ((2 * np.pi * R) / n)  # distance traveled by the right wheel
-        # dl = l * ((2 * np.pi * R) / n)  # distance traveled by the left wheel
-        d = (dr + dl) / 2               # total distance traveled by the middle point between the wheels
-        alfa = (dr - dl) / L           # change in heading
+        # distancia percorrida nos eixos x e y
+        x = d * np.cos(theta)          
+        y = d * np.sin(theta)          
         
-        x = d * np.cos(theta)          # distance traveled in x direction
-        y = d * np.sin(theta)          # distance traveled in y direction
-        x_pos.append(x_pos[-1] + abs(x))    # update x position based on the last x position
-        y_pos.append(y_pos[-1] + abs(y))    # update y position based on the last y position
+        # atualiza posição nos eixos x e y, com base nas ultimas posições
+        x_pos.append(x_pos[-1] + abs(x))    
+        y_pos.append(y_pos[-1] + abs(y))    
         print(dl, dr, theta, x, y)
-        theta += alfa                  # update heading
+
+        # aualiza o angulo da nova orientação
+        theta += alfa                  
     plot_trajectory(x_pos, y_pos)
 
 
