@@ -21,10 +21,10 @@ def gerar_grafico_velocidade(time, velocidade):
     ax.set_xlim(0, max(time))
     ax.set_ylim(velocidade.min(), velocidade.max())
     ax.plot(time, velocidade, label='Velocidade E', color='blue', linestyle='solid', marker='o')
-    #ax.plot(time, velD, label='Velocidade D', color='red', linestyle='solid', marker='o')
+    # ax.plot(time, velD, label='Velocidade D', color='red', linestyle='solid', marker='o')
     ax.set_title("Velocidade ao longo do tempo")
-    ax.set_xlabel('Tempo')
-    ax.set_ylabel('Velocidade')
+    ax.set_xlabel('Tempo (s)')  # unidade de medida do eixo x
+    ax.set_ylabel('Velocidade (m/s)')  # unidade de medida do eixo y
     ax.legend()
     ax.grid(True)
     plt.tight_layout()
@@ -32,15 +32,16 @@ def gerar_grafico_velocidade(time, velocidade):
     plt.show()
     plt.close(fig)
 
+
 def gerar_grafico_aceleracao(time, acc_abs):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.clear()
     ax.set_xlim(0, max(time))
     ax.set_ylim(min(acc_abs), max(acc_abs))
     ax.plot(time, acc_abs, label='Aceleração Absoluta', color='blue', linestyle='solid', marker='o')
-    ax.set_title(f"Aceleração Absoluta ao longo do tempo")
-    ax.set_xlabel('Tempo')
-    ax.set_ylabel('Aceleração Absoluta')
+    ax.set_title("Aceleração Absoluta ao longo do tempo")
+    ax.set_xlabel('Tempo (s)')  # unidade de medida no eixo x
+    ax.set_ylabel('Aceleração Absoluta (m/s²)')  # Adiciona a unidade de medida no eixo y
     ax.legend()
     ax.grid(True)
     plt.tight_layout()
@@ -126,11 +127,12 @@ def gerar_grafico_corrente(time, numPercurso, corrente):
     ax.set_ylim(min(corrente), max(corrente))
 
     # Plotar dados no subplot
-    ax.plot(time, corrente, label='Acceleration X', color='blue', linestyle='solid', marker='o')
+    ax.plot(time, corrente, label='Corrente', color='blue', linestyle='solid', marker='o')
+    
     # Configurar título, labels e outros elementos do subplot
-    ax.set_title(f"Corrente ao longo do tempo")
-    ax.set_xlabel('Tempo')
-    ax.set_ylabel('Corrente')
+    ax.set_title("Corrente ao longo do tempo")
+    ax.set_xlabel('Tempo (s)')  # unidade de medida  do eixo x
+    ax.set_ylabel('Corrente (mA)')  # unidade de medida do eixo y
     ax.legend()
     ax.grid(True)
 
@@ -138,8 +140,9 @@ def gerar_grafico_corrente(time, numPercurso, corrente):
     plt.tight_layout()
 
     # Mostrar o gráfico na tela
-    #plt.show()
+    # plt.show()
     plt.savefig('corrente.png')  # Salvar o gráfico como um arquivo de imagem
+    plt.close(fig)  # Fecha a figura para liberar memória
 
 
 def criarGrafico(conexao, numPercurso):
