@@ -55,8 +55,8 @@ def plot_trajectory(x_pos, y_pos):
 
     ax.plot(x_pos, y_pos, label='Trajetória', color='blue', linestyle='solid', marker='o')
     ax.set_title('Trajetória')
-    ax.set_xlabel('Posição X (cm)')  # unidade de medida a do eixo x (estão em metros (m))
-    ax.set_ylabel('Posição Y (cm)')  # unidade de medida  do eixo y (estão em metros (m))
+    ax.set_xlabel('Posição X (cm)')  # unidade de medida a do eixo x (estão em centimetros (m))
+    ax.set_ylabel('Posição Y (cm)')  # unidade de medida  do eixo y (estão em centimetros (m))
     ax.legend()
     ax.grid(True)
     plt.tight_layout()
