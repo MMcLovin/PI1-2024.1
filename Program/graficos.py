@@ -53,14 +53,14 @@ def plot_trajectory(x_pos, y_pos):
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.clear()
 
-    ax.plot(x_pos, y_pos, label='Trajetoria', color='blue', linestyle='solid', marker='o')
-    ax.set_title(f"Trajetória")
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
+    ax.plot(x_pos, y_pos, label='Trajetória', color='blue', linestyle='solid', marker='o')
+    ax.set_title('Trajetória')
+    ax.set_xlabel('Posição X (m)')  # unidade de medida a do eixo x (estão em metros (m))
+    ax.set_ylabel('Posição Y (m)')  # unidade de medida  do eixo y (estão em metros (m))
     ax.legend()
     ax.grid(True)
     plt.tight_layout()
-    plt.savefig("trajetoria.png")
+    plt.savefig('trajetoria.png')
     plt.close(fig)
 
 
